@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Friday 420 AI</string>
+    <string name="assistant_title">Friday 420 AI Assistant</string>
+    <string name="voice_listening">ফ্রাইডে শুনছে… বলুন (Listening…)</string>
+    <string name="voice_ready">ট্যাপ করে কথা বলুন বা "Hey Friday" বলুন</string>
+    <string name="social_media">সোশ্যাল মিডিয়া কন্ট্রোলার</string>
+    <string name="pc_control">পিসি রিমোট কন্ট্রোল</string>
+    <string name="api_hub">১৫টি এআই এজেন্ট হাব</string>
+    <string name="notification_channel_name">Friday Voice Assistant Service</string>
+    <string name="notification_channel_desc">Active background voice recognition for Friday 420 AI</string>
+    <string name="notification_active">Friday 420 Voice Assistant সক্রিয় আছে</string>
+</resources>

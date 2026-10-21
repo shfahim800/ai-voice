@@ -433,7 +433,21 @@ export default function App() {
             <span>ZIP</span>
           </button>
 
-          {/* Primary Action: Android 16 APK File Download Button */}
+          {/* Native Android Kotlin App Button */}
+          <button
+            onClick={() => {
+              audioService.playCyberChime('activate');
+              setIsApkModalOpen(true);
+            }}
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:brightness-110 active:scale-95 transition cursor-pointer"
+            title="Download Native Android App with Kotlin & Android SDK"
+          >
+            <Smartphone className="w-4 h-4 stroke-[2.5]" />
+            <span className="hidden sm:inline">Native Kotlin App</span>
+            <span className="sm:hidden">Kotlin App</span>
+          </button>
+
+          {/* Android 16 APK File Download Button */}
           <button
             onClick={() => {
               audioService.playCyberChime('activate');
@@ -442,7 +456,7 @@ export default function App() {
             className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_15px_rgba(52,211,153,0.4)] hover:brightness-110 active:scale-95 transition cursor-pointer"
           >
             <Download className="w-4 h-4 text-slate-950 stroke-[2.5]" />
-            <span>Android 16 APK</span>
+            <span>Android APK</span>
           </button>
         </div>
       </header>

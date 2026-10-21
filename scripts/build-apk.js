@@ -187,14 +187,14 @@ export async function buildApk() {
   // 5. Assets
   const assets = zip.folder('assets');
   assets?.file('app_config.json', JSON.stringify({
-    appName: "SH AI Assistant",
-    version: "1.0.0-Android16",
+    appName: "Friday 420 AI Assistant",
+    version: "1.0.0-Friday420",
     targetSdk: 36,
     compileSdk: 36,
     minSdk: 26,
     gradleVersion: "8.11.1",
     agpVersion: "8.9.0",
-    theme: "cyberpunk-blue"
+    theme: "cyberpunk-ios-blur"
   }, null, 2));
 
   // Also include the web app in assets/www
@@ -225,6 +225,7 @@ export async function buildApk() {
   fs.mkdirSync(publicDir, { recursive: true });
   fs.writeFileSync(path.join(publicDir, 'app-debug.apk'), buffer);
   fs.writeFileSync(path.join(publicDir, 'SH_AI_Assistant_Android16_Clean.apk'), buffer);
+  fs.writeFileSync(path.join(publicDir, 'Friday420_AI_Assistant_Android.apk'), buffer);
 
   console.log(`APK built successfully:`);
   console.log(`- ${apkPath} (${(buffer.length / 1024).toFixed(1)} KB)`);
