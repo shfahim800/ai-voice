@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#030712" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="ringGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#030712"/>
+  <circle cx="256" cy="256" r="230" fill="url(#bgGlow)"/>
+
+  <!-- Outer Tech Orbits -->
+  <circle cx="256" cy="256" r="195" fill="none" stroke="#0284c7" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="10 14"/>
+  <circle cx="256" cy="256" r="170" fill="none" stroke="url(#ringGlow)" stroke-width="4" stroke-opacity="0.75" filter="url(#glowFilter)"/>
+  
+  <!-- Accent Tech Arcs -->
+  <path d="M 120 256 A 136 136 0 0 1 392 256" fill="none" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" filter="url(#glowFilter)"/>
+  <path d="M 150 256 A 106 106 0 0 0 362 256" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Orbital Nodes -->
+  <circle cx="256" cy="86" r="6" fill="#38bdf8" filter="url(#glowFilter)"/>
+  <circle cx="392" cy="256" r="6" fill="#00f0ff" filter="url(#glowFilter)"/>
+  <circle cx="256" cy="426" r="6" fill="#38bdf8" filter="url(#glowFilter)"/>
+  <circle cx="120" cy="256" r="6" fill="#00f0ff" filter="url(#glowFilter)"/>
+
+  <!-- Inner Circle with Core Glow -->
+  <circle cx="256" cy="256" r="120" fill="#082f49" fill-opacity="0.5" stroke="#38bdf8" stroke-width="2.5" filter="url(#glowFilter)"/>
+  <circle cx="256" cy="256" r="105" fill="#030712" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+  <!-- SH Monogram Typography -->
+  <g filter="url(#glowFilter)">
+    <text x="256" y="280" font-family="'Plus Jakarta Sans', sans-serif, system-ui" font-size="115" font-weight="900" fill="url(#neonCyan)" text-anchor="middle" letter-spacing="4">SH</text>
+  </g>
+</svg>

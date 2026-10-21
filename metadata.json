@@ -1,0 +1,6 @@
+{
+  "name": "SH AI Assistant",
+  "description": "Your Personal AI - Next-generation personal AI assistant with voice, PC control, tools, plugins, and Android APK export.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

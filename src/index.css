@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    background-color: #030712;
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom glowing effects matching the UI screenshot */
+.glow-cyan {
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+}
+
+.glow-cyan-sm {
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+.glow-blue {
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+}
+
+.glow-border {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.08), 0 0 15px rgba(56, 189, 248, 0.15);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
+}
+
+/* Pulse animation rings */
+@keyframes tech-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes tech-spin-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* iOS 26 Apple Squircle & Liquid Blur Utilities */
+.ios-squircle {
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ios-glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.28);
+}
+
+.ios-glass-dock {
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(35px);
+  -webkit-backdrop-filter: blur(35px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.ios-specular-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+}
+
+/* iOS Grouped Inset Table Utilities */
+.ios-grouped-table {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.ios-icon-squircle {
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Staircase / Cascading Animation ("সিড়ির মত ইফেক্টস অ্যানিমেশন") */
+@keyframes staircase-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+  }
+  60% {
+    opacity: 0.85;
+    transform: translateY(-2px) scale(1.005);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.staircase-1 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 30ms; }
+.staircase-2 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 70ms; }
+.staircase-3 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 110ms; }
+.staircase-4 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 150ms; }
+.staircase-5 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 190ms; }
+.staircase-6 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 230ms; }
+.staircase-7 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 270ms; }
+.staircase-8 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 310ms; }
+.staircase-9 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 350ms; }
+.staircase-10 { animation: staircase-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 390ms; }
+
+.animate-tech-spin {
+  animation: tech-spin 20s linear infinite;
+}
+
+.animate-tech-spin-reverse {
+  animation: tech-spin-reverse 15s linear infinite;
+}
+
+@keyframes sound-wave {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
+}

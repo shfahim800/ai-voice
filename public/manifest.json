@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "SH AI Assistant - Your Personal AI",
+  "short_name": "SH AI",
+  "description": "Your Personal AI with voice control, PC integration, tools, and smart plugins.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030712",
+  "theme_color": "#030712",
+  "categories": ["utilities", "productivity", "personalization"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
