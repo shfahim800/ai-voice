@@ -452,9 +452,18 @@ function triggerDownload(blob: Blob, filename: string) {
 }
 
 export async function downloadHtmlCodeZip(): Promise<void> {
+  try {
+    const res = await fetch('/SH_AI_Assistant_HTML_Code.zip');
+    if (res.ok) {
+      const blob = await res.blob();
+      triggerDownload(blob, 'SH_AI_Assistant_HTML_Code.zip');
+      return;
+    }
+  } catch (e) {
+    console.warn('Direct zip fetch fallback to client-side packaging');
+  }
+
   const zip = new JSZip();
-  const standalone = zip.folder('standalone');
-  
   const sampleHtml = `<!DOCTYPE html>
 <html lang="bn" class="dark">
 <head>
@@ -472,8 +481,8 @@ export async function downloadHtmlCodeZip(): Promise<void> {
 </body>
 </html>`;
 
-  standalone?.file('index.html', sampleHtml);
   zip.file('index.html', sampleHtml);
+  zip.file('README.md', '# SH AI Assistant HTML Code Package\nDouble-click index.html to run immediately in your browser.');
 
   const blob = await zip.generateAsync({
     type: 'blob',
