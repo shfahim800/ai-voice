@@ -23,7 +23,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'    # Node.js 20 deprecation warning এড়াতে 22 ব্যবহার করা হয়েছে
+        node-version: '22'
 
     - name: Install Dependencies
       run: |
@@ -43,13 +43,9 @@ jobs:
 
     - name: Grant execute permission and Build APK
       run: |
-        if [ -f "android/gradlew" ]; then
-          chmod +x android/gradlew
-          cd android && ./gradlew assembleDebug
-        elif [ -f "gradlew" ]; then
-          chmod +x gradlew
-          ./gradlew assembleDebug
-        fi
+        cd android
+        chmod +x gradlew
+        ./gradlew assembleDebug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
