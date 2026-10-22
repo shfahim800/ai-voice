@@ -126,7 +126,6 @@ android {
         }
 
         ndk {
-            // Support modern 16KB page alignment in Android 15 & 16
             abiFilters += listOf("arm64-v8a", "x86_64")
         }
     }
@@ -236,10 +235,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-/**
- * SH AI Assistant - Android 16 (API 36) Native Activity
- * Verified with Gradle 8.11 & JDK 17/21
- */
 class MainActivity : ComponentActivity() {
 
     private lateinit var webView: WebView
@@ -248,7 +243,6 @@ class MainActivity : ComponentActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enforce native Android 16 Edge-to-Edge layout
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         
@@ -294,11 +288,11 @@ class MainActivity : ComponentActivity() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                progressBar.visibility = View.VISIBLE
+                progressBar.visibility = android.view.View.VISIBLE
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                progressBar.visibility = View.GONE
+                progressBar.visibility = android.view.View.GONE
             }
         }
 
@@ -323,36 +317,16 @@ class MainActivity : ComponentActivity() {
 }
 `;
 
-// Helper to create valid Android Binary XML (AXML) chunk
 export function createBinaryAndroidManifest(): Uint8Array {
   const strings = [
     "http://schemas.android.com/apk/res/android",
-    "package",
-    "versionCode",
-    "versionName",
-    "minSdkVersion",
-    "targetSdkVersion",
-    "name",
-    "label",
-    "icon",
-    "theme",
-    "exported",
-    "manifest",
-    "uses-permission",
-    "application",
-    "activity",
-    "intent-filter",
-    "action",
-    "category",
-    "com.sh.assistant",
-    "1.0.0-Android16",
-    "android.permission.INTERNET",
-    "android.permission.RECORD_AUDIO",
-    "android.permission.CAMERA",
-    "android.permission.POST_NOTIFICATIONS",
-    "com.sh.assistant.MainActivity",
-    "android.intent.action.MAIN",
-    "android.intent.category.LAUNCHER"
+    "package", "versionCode", "versionName", "minSdkVersion", "targetSdkVersion",
+    "name", "label", "icon", "theme", "exported", "manifest", "uses-permission",
+    "application", "activity", "intent-filter", "action", "category",
+    "com.sh.assistant", "1.0.0-Android16",
+    "android.permission.INTERNET", "android.permission.RECORD_AUDIO",
+    "android.permission.CAMERA", "android.permission.POST_NOTIFICATIONS",
+    "com.sh.assistant.MainActivity", "android.intent.action.MAIN", "android.intent.category.LAUNCHER"
   ];
 
   const strOffsets: number[] = [];
@@ -381,13 +355,11 @@ export function createBinaryAndroidManifest(): Uint8Array {
   const view = new DataView(buffer);
   let pos = 0;
 
-  // RES_XML_TYPE header
   view.setUint16(pos, 0x0003, true); pos += 2;
   view.setUint16(pos, 0x0008, true); pos += 2;
   const fileSizeOffset = pos;
   view.setUint32(pos, 0, true); pos += 4;
 
-  // RES_STRING_POOL_TYPE
   view.setUint16(pos, 0x0001, true); pos += 2;
   view.setUint16(pos, stringPoolHeaderSize, true); pos += 2;
   view.setUint32(pos, stringPoolSize, true); pos += 4;
@@ -406,7 +378,6 @@ export function createBinaryAndroidManifest(): Uint8Array {
   u8View.set(strBytes, pos);
   pos += strBytes.length;
 
-  // XML Start Namespace
   view.setUint16(pos, 0x0100, true); pos += 2;
   view.setUint16(pos, 0x0010, true); pos += 2;
   view.setUint32(pos, 0x0018, true); pos += 4;
@@ -415,14 +386,13 @@ export function createBinaryAndroidManifest(): Uint8Array {
   view.setUint32(pos, 0, true); pos += 4;
   view.setUint32(pos, 0, true); pos += 4;
 
-  // Start Element <manifest>
   view.setUint16(pos, 0x0102, true); pos += 2;
   view.setUint16(pos, 0x0010, true); pos += 2;
   view.setUint32(pos, 0x003c, true); pos += 4;
   view.setUint32(pos, 0x0002, true); pos += 4;
   view.setUint32(pos, 0xffffffff, true); pos += 4;
   view.setUint32(pos, 0xffffffff, true); pos += 4;
-  view.setUint32(pos, 11, true); pos += 4; // name: "manifest"
+  view.setUint32(pos, 11, true); pos += 4;
   view.setUint16(pos, 0x0014, true); pos += 2;
   view.setUint16(pos, 0x0014, true); pos += 2;
   view.setUint16(pos, 0x0001, true); pos += 2;
@@ -430,7 +400,6 @@ export function createBinaryAndroidManifest(): Uint8Array {
   view.setUint16(pos, 0x0000, true); pos += 2;
   view.setUint16(pos, 0x0000, true); pos += 2;
 
-  // Attribute: package="com.sh.assistant"
   view.setUint32(pos, 0xffffffff, true); pos += 4;
   view.setUint32(pos, 1, true); pos += 4;
   view.setUint32(pos, 18, true); pos += 4;
@@ -439,7 +408,6 @@ export function createBinaryAndroidManifest(): Uint8Array {
   view.setUint8(pos, 0x03); pos += 1;
   view.setUint32(pos, 18, true); pos += 4;
 
-  // End Element </manifest>
   view.setUint16(pos, 0x0103, true); pos += 2;
   view.setUint16(pos, 0x0010, true); pos += 2;
   view.setUint32(pos, 0x0018, true); pos += 4;
@@ -448,7 +416,6 @@ export function createBinaryAndroidManifest(): Uint8Array {
   view.setUint32(pos, 0xffffffff, true); pos += 4;
   view.setUint32(pos, 11, true); pos += 4;
 
-  // End Namespace
   view.setUint16(pos, 0x0101, true); pos += 2;
   view.setUint16(pos, 0x0010, true); pos += 2;
   view.setUint32(pos, 0x0018, true); pos += 4;
@@ -484,131 +451,7 @@ function triggerDownload(blob: Blob, filename: string) {
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
-// Generate the ready-to-run APK bundle specifically tuned for Android 16
-export async function generateApkPackage(): Promise<void> {
-  const zip = new JSZip();
-
-  const binaryManifest = createBinaryAndroidManifest();
-  zip.file('AndroidManifest.xml', binaryManifest);
-
-  const arscHeader = new Uint8Array([
-    0x02, 0x00, 0x0c, 0x00,
-    0x30, 0x00, 0x00, 0x00,
-    0x01, 0x00, 0x00, 0x00,
-    0x01, 0x00, 0x1c, 0x00, 0x20, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-  ]);
-  zip.file('resources.arsc', arscHeader);
-
-  const dexBytes = createValidClassesDex();
-  zip.file('classes.dex', dexBytes);
-
-  const metaInf = zip.folder('META-INF');
-  metaInf?.file('MANIFEST.MF', `Manifest-Version: 1.0\nCreated-By: 1.0 (Android SignApk Scheme v2/v3)\nTarget-SDK: 36\nMin-SDK: 26\nBuilt-By: SH-AI-Android16-Engine\n`);
-  metaInf?.file('CERT.SF', `Signature-Version: 1.0\nCreated-By: 1.0 (Android SignApk)\nSHA-256-Digest-Manifest: android16_sh_assistant_hash_sign\nX-Android-APK-Signed: 2, 3\n`);
-  metaInf?.file('CERT.RSA', new Uint8Array([0x30, 0x82, 0x02, 0x1f, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d]));
-
-  const assets = zip.folder('assets');
-  assets?.file('app_config.json', JSON.stringify({
-    appName: "SH AI Assistant",
-    version: "1.0.0-Android16",
-    targetSdk: 36,
-    compileSdk: 36,
-    minSdk: 26,
-    gradleVersion: "8.11.1",
-    agpVersion: "8.9.0",
-    jdkVersion: "17 / 21",
-    theme: "cyberpunk-blue"
-  }, null, 2));
-
-  const blob = await zip.generateAsync({
-    type: 'blob',
-    mimeType: 'application/vnd.android.package-archive',
-    compression: 'DEFLATE'
-  });
-
-  triggerDownload(blob, 'SH_AI_Assistant_Android16_Clean.apk');
-}
-
-// Generate the complete Android 16 Source Project with Gradle 8.11 and Version Catalog
-export async function generateAndroidStudioProject(): Promise<void> {
-  const zip = new JSZip();
-
-  // Root files
-  zip.file('build.gradle.kts', ROOT_BUILD_GRADLE_KTS);
-  zip.file('settings.gradle.kts', SETTINGS_GRADLE_KTS);
-  zip.file('gradle.properties', GRADLE_PROPERTIES);
-
-  // Gradle wrapper
-  const gradleWrapper = zip.folder('gradle')?.folder('wrapper');
-  gradleWrapper?.file('gradle-wrapper.properties', GRADLE_WRAPPER_PROPERTIES);
-
-  // Gradle Version Catalog
-  const gradleDir = zip.folder('gradle');
-  gradleDir?.file('libs.versions.toml', GRADLE_LIBS_VERSIONS_TOML);
-
-  // App module
-  const app = zip.folder('app');
-  app?.file('build.gradle.kts', APP_BUILD_GRADLE_KTS);
-  app?.file('proguard-rules.pro', `# Android 16 Proguard rules\n-keep class com.sh.assistant.** { *; }`);
-
-  const srcMain = app?.folder('src')?.folder('main');
-  srcMain?.file('AndroidManifest.xml', ANDROID_MANIFEST_XML);
-
-  const kotlinPkg = srcMain?.folder('java')?.folder('com')?.folder('sh')?.folder('assistant');
-  kotlinPkg?.file('MainActivity.kt', MAIN_ACTIVITY_KOTLIN);
-
-  const resValues = srcMain?.folder('res')?.folder('values');
-  resValues?.file('strings.xml', `<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">SH AI Assistant</string>
-    <string name="welcome">Good Evening, SH Fahim</string>
-</resources>`);
-
-  const blob = await zip.generateAsync({
-    type: 'blob',
-    mimeType: 'application/zip',
-    compression: 'DEFLATE'
-  });
-
-  triggerDownload(blob, 'SH_AI_Assistant_Android16_Project.zip');
-}
-
-export function downloadWindowsScript(ip?: string, port?: number): void {
-  const targetIp = ip || '192.168.1.10';
-  const targetPort = port || 5890;
-  const scriptContent = `@echo off
-title SH AI Assistant - Windows Wi-Fi Companion Agent
-color 0b
-echo ============================================================
-echo   SH AI Assistant - PC Wi-Fi Companion Server
-echo   Target IP: ${targetIp} | Port: ${targetPort}
-echo ============================================================
-echo.
-echo Starting Companion Daemon on port ${targetPort}...
-powershell -Command "Write-Host 'Listening for mouse, keyboard, and file transfer events from SH AI Assistant on port ${targetPort}...' -ForegroundColor Cyan"
-python -c "import http.server, socketserver; PORT=${targetPort}; print('Companion Agent online on port', PORT); socketserver.TCPServer(('', PORT), http.server.SimpleHTTPRequestHandler).serve_forever()"
-pause
-`;
-  const blob = new Blob([scriptContent], { type: 'application/x-bat' });
-  triggerDownload(blob, 'SH_AI_PC_Agent.bat');
-}
-
-// Download HTML Code Zip (Standalone HTML + Web source)
 export async function downloadHtmlCodeZip(): Promise<void> {
-  try {
-    const res = await fetch('/SH_AI_Assistant_HTML_Code.zip');
-    if (res.ok) {
-      const blob = await res.blob();
-      triggerDownload(blob, 'SH_AI_Assistant_HTML_Code.zip');
-      return;
-    }
-  } catch (e) {
-    console.warn('Direct zip fetch fallback to client-side packaging');
-  }
-
-  // Client-side fallback generation
   const zip = new JSZip();
   const standalone = zip.folder('standalone');
   
@@ -625,125 +468,18 @@ export async function downloadHtmlCodeZip(): Promise<void> {
     <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 border border-cyan-400 mx-auto flex items-center justify-center font-bold text-2xl text-cyan-300">SH</div>
     <h1 class="text-xl font-bold text-white">SH AI Assistant - Web Edition</h1>
     <p class="text-xs text-cyan-400">10 Screens • Multi-Language Voice • PC Wi-Fi Control</p>
-    <div class="p-4 rounded-2xl bg-[#091524] border border-cyan-950 text-xs text-left">
-      <p class="font-bold text-white mb-2">Available in this package:</p>
-      <ul class="space-y-1 text-slate-300">
-        <li>• Complete interactive 10-screen Android simulation</li>
-        <li>• Multi-Language Voice (Bangla bn-BD, English en-US, Hindi, Arabic, etc.)</li>
-        <li>• PC Control agent connection via port 5890</li>
-        <li>• Full source code in project-source/</li>
-      </ul>
-    </div>
   </div>
 </body>
 </html>`;
 
   standalone?.file('index.html', sampleHtml);
-  standalone?.file('README.md', '# SH AI Assistant HTML Code Package\nDouble-click index.html to run immediately in your browser.');
   zip.file('index.html', sampleHtml);
-  zip.file('README.md', '# SH AI Assistant HTML Code Package\nDouble-click index.html to run immediately in your browser.');
 
-export async function downloadNativeKotlinProjectZip(): Promise<void> {
-  try {
-    const res = await fetch('/Friday420_AI_Assistant_Native_Kotlin_Android_SDK.zip');
-    if (res.ok) {
-      const blob = await res.blob();
-      triggerDownload(blob, 'Friday420_AI_Assistant_Native_Kotlin_Android_SDK.zip');
-      return;
-    }
-  } catch (e) {
-    console.warn('Native zip fetch failed, falling back to dynamic generator');
-  }
-  // Fallback to dynamic generator
-  await generateAndroidStudioProject();
+  const blob = await zip.generateAsync({
+    type: 'blob',
+    mimeType: 'application/zip',
+    compression: 'DEFLATE'
+  });
+
+  triggerDownload(blob, 'SH_AI_Assistant_HTML_Code.zip');
 }
-
-export async function downloadNativeApk(): Promise<void> {
-  try {
-    const res = await fetch('/Friday420_AI_Assistant_Android.apk');
-    if (res.ok) {
-      const blob = await res.blob();
-      triggerDownload(blob, 'Friday420_AI_Assistant_Android.apk');
-      return;
-    }
-  } catch (e) {
-    console.warn('Direct APK fetch fallback');
-  }
-  await generateApkPackage();
-}
-
-export const KOTLIN_NATIVE_FILES = {
-  'MainActivity.kt': `package com.friday420.assistant
-
-import android.Manifest
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import com.friday420.assistant.ai.ApiRaceHub
-import com.friday420.assistant.service.FridayTtsEngine
-import com.friday420.assistant.social.SocialMediaIntentController
-import com.friday420.assistant.ui.screens.MainAssistantScreen
-import com.friday420.assistant.ui.theme.Friday420Theme
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            Friday420Theme {
-                MainAssistantScreen(
-                    isListening = false,
-                    voiceStatus = "READY",
-                    rmsLevel = 0f,
-                    lastCommand = "",
-                    activeWinner = null,
-                    onToggleListening = {},
-                    onTriggerRace = {},
-                    onSocialAction = {},
-                    onPcCommand = {},
-                    onSelectPreset = {}
-                )
-            }
-        }
-    }
-}`,
-  'FridayVoiceForegroundService.kt': `package com.friday420.assistant.service
-
-import android.app.Service
-import android.content.Intent
-import android.speech.RecognitionListener
-import android.speech.SpeechRecognizer
-
-/**
- * Background Voice Recognition Foreground Service
- * Listens for hotwords ("Friday", "ফ্রাইডে", "420") & executes commands.
- */
-class FridayVoiceForegroundService : Service(), RecognitionListener {
-    // Android SDK SpeechRecognizer with continuous bn-BD / en-US listening
-}`,
-  'ApiRaceHub.kt': `package com.friday420.assistant.ai
-
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-
-/**
- * 15-Agent Parallel Race Hub in Kotlin Coroutines
- * Queries 15 AI agents concurrently and returns the fastest answer (<120ms).
- */
-class ApiRaceHub {
-    val agents = listOf("Gemini 2.5 Flash", "Groq Llama 3.3", "GPT-4o Mini", "DeepSeek V3", "Claude 3.5 Sonnet", ...)
-    suspend fun raceQuery(...) { /* Concurrent coroutine execution */ }
-}`,
-  'SocialMediaIntentController.kt': `package com.friday420.assistant.social
-
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-
-/**
- * Native Android SDK Social Media Intent & Voice Controller
- * Deep-links into Facebook, WhatsApp, YouTube, Instagram, TikTok, Threads, X.
- */
-class SocialMediaIntentController(private val context: Context) {
-    fun parseVoiceCommand(text: String): SocialAction? { /* Deep link dispatcher */ }
-}`
-};
