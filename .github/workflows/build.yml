@@ -28,20 +28,25 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install --legacy-peer-deps
-        npm install -g @capacitor/cli @capacitor/core
+        npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
 
-    - name: Build Web App
+    - name: Build Web App & Prepare Web Dir
       run: |
         npm run build
+        mkdir -p www
+        cp -r dist/* www/ || true
 
     - name: Sync Capacitor Android
       run: |
-        npx @capacitor/cli sync android || true
+        npx cap sync android || true
 
     - name: Grant Execute Permission & Build APK
       run: |
-        if [ -d "android" ]; then
+        if [ -f "android/gradlew" ]; then
           cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug || true
+        elif [ -f "gradlew" ]; then
           chmod +x gradlew
           ./gradlew assembleDebug || true
         fi
@@ -52,4 +57,5 @@ jobs:
         name: SH-AI-Assistant-APK
         path: |
           android/app/build/outputs/apk/debug/app-debug.apk
+          public/app-debug.apk
           app-debug.apk
