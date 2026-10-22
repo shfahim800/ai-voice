@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Pipeline
 
 on:
   push:
@@ -10,26 +10,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-  
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_NODE_TYPE: node24
-
     steps:
+      # v4 থেকে লেটেস্ট v5 বা লেটেস্ট ভার্সনে আপডেট
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Set up Java JDK 17
-        uses: actions/setup-java@v4
+      # setup-java v4 এর জায়গায় v5 ব্যবহার করুন
+      - name: Set up JDK
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      # setup-android অ্যাকশন আপডেট করুন
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      # Node.js এনভায়রনমেন্ট সেটআপ (Node 24 বা লেটেস্ট ব্যবহার করতে)
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
