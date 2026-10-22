@@ -41,14 +41,22 @@ jobs:
           npx cap add android || true
           npx cap sync android
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x android/gradlew
-
-      - name: Build APK with Gradle
-        run: cd android && ./gradlew assembleDebug
+      - name: Grant execute permission and Build APK
+        run: |
+          if [ -f "android/gradlew" ]; then
+            chmod +x android/gradlew
+            cd android && ./gradlew assembleDebug
+          elif [ -f "gradlew" ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug
+          else
+            echo "Gradle wrapper not found!"
+            find . -name gradlew
+            exit 1
+          fi
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SH-AI-Assistant-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: '**/build/outputs/apk/debug/*.apk'
