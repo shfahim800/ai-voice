@@ -1,36 +1,36 @@
-name: Build Pipeline
+
+name: Build APK
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # v4 থেকে লেটেস্ট v5 বা লেটেস্ট ভার্সনে আপডেট
-      - name: Checkout Code
-        uses: actions/checkout@v5
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-      # setup-java v4 এর জায়গায় v5 ব্যবহার করুন
-      - name: Set up JDK
-        uses: actions/setup-java@v5
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          distribution: temurin
+          java-version: 17
 
-      # setup-android অ্যাকশন আপডেট করুন
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      # Node.js এনভায়রনমেন্ট সেটআপ (Node 24 বা লেটেস্ট ব্যবহার করতে)
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Debug APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '24'
-
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
