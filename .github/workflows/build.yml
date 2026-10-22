@@ -11,48 +11,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v5
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-      - name: Install Dependencies
-        run: |
-          npm install --legacy-peer-deps
-          npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
+    - name: Install Dependencies
+      run: |
+        npm install --legacy-peer-deps
+        npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
 
-      - name: Build Web App & Prepare Web Dir
-        run: |
-          npm run build
-          mkdir -p www
-          cp -r dist/* www/ || true
+    - name: Build Web App & Prepare Web Dir
+      run: |
+        npm run build
+        mkdir -p www
+        cp -r dist/* www/ || true
 
-      - name: Add Android Platform & Sync
-        run: |
-          npx cap add android || true
-          npx cap sync android
+    - name: Add Android Platform & Sync
+      run: |
+        npx cap add android || true
+        npx cap sync android
 
-      - name: Grant execute permission and Build APK
-        run: |
-          if [ -f "android/gradlew" ]; then
-            chmod +x android/gradlew
-            cd android && ./gradlew assembleDebug
-          elif [ -f "gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          fi
+    - name: Grant execute permission and Build APK
+      run: |
+        if [ -f "android/gradlew" ]; then
+          chmod +x android/gradlew
+          cd android && ./gradlew assembleDebug
+        elif [ -f "gradlew" ]; then
+          chmod +x gradlew
+          ./gradlew assembleDebug
+        fi
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: SH-AI-Assistant-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SH-AI-Assistant-APK
+        path: android/app/build/outputs/apk/debug/app-debug.apk
