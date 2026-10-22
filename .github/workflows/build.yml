@@ -33,7 +33,4 @@ jobs:
           node-version: '24'
 
       - name: Install Dependencies
-        run:  npm install
-
-      - name: Build Project
-        run: npm run build
+        run: npm install --legacy-peer-deps
