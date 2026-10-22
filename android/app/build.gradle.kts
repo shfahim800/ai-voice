@@ -5,15 +5,15 @@ plugins {
 }
 
 android {
-    namespace = "com.friday420.assistant"
-    compileSdk = 36
+    namespace = "com.sh.assistant"
+    compileSdk = 36 // Android 16 SDK
 
     defaultConfig {
-        applicationId = "com.friday420.assistant"
+        applicationId = "com.sh.assistant"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 42001
-        versionName = "1.0.0-Friday420"
+        targetSdk = 36 // Target Android 16
+        versionCode = 16001
+        versionName = "1.0.0-Android16"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -21,6 +21,7 @@ android {
         }
 
         ndk {
+            // Support modern 16KB page alignment in Android 15 & 16
             abiFilters += listOf("arm64-v8a", "x86_64")
         }
     }
@@ -35,7 +36,9 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
         debug {
-          
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -54,6 +57,7 @@ android {
 
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -71,5 +75,6 @@ dependencies {
     implementation(libs.androidx.webkit)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+    implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.coroutines.android)
 }

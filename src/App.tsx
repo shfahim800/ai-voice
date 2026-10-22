@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
-   Download, 
-   Smartphone, 
-   Monitor, 
-   Grid, 
-   Volume2, 
-   VolumeX, 
-   Sparkles, 
-   Layers, 
-   Maximize2, 
-   Minimize2,
+  Download, 
+  Smartphone, 
+  Monitor, 
+  Grid, 
+  Volume2, 
+  VolumeX, 
+  Sparkles, 
+  Layers, 
+  Maximize2, 
+  Minimize2,
   Terminal,
   Laptop,
   FileCode,
@@ -54,14 +54,14 @@ const INITIAL_PLUGINS: PluginItem[] = [
   { id: '4', name: 'Web Search', description: 'Real-time Internet Search', iconName: 'search', enabled: true, category: 'tools' },
   { id: '5', name: 'File Manager', description: 'Files & Documents', iconName: 'folder', enabled: true, category: 'system' },
   { id: '6', name: 'App Launcher', description: 'Open Installed Apps', iconName: 'grid', enabled: true, category: 'system' },
-  { id: '7', name: 'Translation', description: 'Bangla - English', iconName: 'languages', enabled: true, category: 'tools' },
+  { id: '7', name: 'Translation', description: 'Bangla ↔ English', iconName: 'languages', enabled: true, category: 'tools' },
   { id: '8', name: 'Calculator', description: 'Quick Calculation', iconName: 'calc', enabled: true, category: 'tools' },
   { id: '9', name: 'System Monitor', description: 'CPU | RAM | Network', iconName: 'activity', enabled: true, category: 'system' },
   { id: '10', name: 'Automation', description: 'Task & Workflow', iconName: 'workflow', enabled: true, category: 'system' },
   { id: '11', name: 'Hardware Telemetry', description: 'Real-time CPU | GPU | RAM', iconName: 'cpu', enabled: true, category: 'system' },
-  { id: '12', name: 'Cloud Clipboard Sync', description: 'Cross-Device Phone - PC', iconName: 'clipboard', enabled: true, category: 'system' },
+  { id: '12', name: 'Cloud Clipboard Sync', description: 'Cross-Device Phone ↔ PC', iconName: 'clipboard', enabled: true, category: 'system' },
   { id: '13', name: 'Code & Prompt Sandbox', description: 'Run Scripts & JSON Payloads', iconName: 'terminal', enabled: true, category: 'tools' },
-  { id: '14', name: 'Network Traffic Analyzer', description: 'Ping | Latency | Wi-Fi Bridge', iconName: 'wifi', enabled: true, category: 'tools' }
+  { id: '14', name: 'Network Traffic Analyzer', description: 'Ping | Latency | Wi-Fi Bridge', iconName: 'wifi', enabled: true, category: 'tools' },
 ];
 
 export default function App() {
@@ -72,7 +72,7 @@ export default function App() {
   const [isApkModalOpen, setIsApkModalOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  
+
   const [settings, setSettings] = useState<AssistantSettings>({
     userName: 'SH Fahim',
     language: 'bn-BD',
@@ -95,7 +95,7 @@ export default function App() {
       speechPitch: 1.1,
       voiceGender: 'neural',
       wakeWordEnabled: true,
-      wakeWordPhrase: 'Hey Friday 420',
+      wakeWordPhrase: 'হেই ৪২০ ফ্রাইডে',
       noiseSuppression: true,
       offlineVoiceModel: false,
       presetId: 'friday-420',
@@ -105,15 +105,18 @@ export default function App() {
     }
   });
 
+  // Capture PWA install prompt for WebAPK install
   useEffect(() => {
     const handleBeforeInstall = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+
     const unsubTheme = themeService.subscribe((t) => {
       setSettings(prev => ({ ...prev, theme: t }));
     });
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
       unsubTheme();
@@ -148,11 +151,16 @@ export default function App() {
     else if (toolId === 'notes') setActiveModal('notes');
     else if (toolId === 'qr') setActiveModal('qr');
     else if (toolId === 'image-gen') setActiveModal('image-gen');
-    else if (toolId === 'news') setActiveModal('notes');
-    else if (toolId === 'youtube') setCurrentScreen('social-media');
-    else if (toolId === 'calendar') setActiveModal('notes');
+    else if (toolId === 'news') {
+      setActiveModal('notes');
+    } else if (toolId === 'youtube') {
+      setCurrentScreen('social-media');
+    } else if (toolId === 'calendar') {
+      setActiveModal('notes');
+    }
   };
 
+  // Render current screen inside phone
   const renderScreenContent = () => {
     switch (currentScreen) {
       case 'splash':
@@ -167,27 +175,66 @@ export default function App() {
           />
         );
       case 'chat':
-        return <ChatScreen onBack={() => setCurrentScreen('home')} onNavigate={setCurrentScreen} apiKey={settings.apiKey} />;
+        return (
+          <ChatScreen
+            onBack={() => setCurrentScreen('home')}
+            onNavigate={setCurrentScreen}
+            apiKey={settings.apiKey}
+          />
+        );
       case 'voice':
-        return <VoiceScreen onBack={() => setCurrentScreen('home')} onNavigate={setCurrentScreen} apiKey={settings.apiKey} />;
+        return (
+          <VoiceScreen
+            onBack={() => setCurrentScreen('home')}
+            onNavigate={setCurrentScreen}
+            apiKey={settings.apiKey}
+          />
+        );
       case 'system-apps':
-        return <SystemAppsScreen onBack={() => setCurrentScreen('home')} onNavigate={setCurrentScreen} />;
+        return (
+          <SystemAppsScreen
+            onBack={() => setCurrentScreen('home')}
+            onNavigate={setCurrentScreen}
+          />
+        );
       case 'social-media':
-        return <SocialMediaScreen onBack={() => setCurrentScreen('tools')} onNavigate={setCurrentScreen} />;
+        return (
+          <SocialMediaScreen
+            onBack={() => setCurrentScreen('tools')}
+            onNavigate={setCurrentScreen}
+          />
+        );
       case 'voice-settings':
         return (
           <VoiceSettingsScreen
             onBack={() => setCurrentScreen('settings')}
-            voiceConfig={settings.voiceConfig!}
-            onUpdateConfig={(vc) => setSettings(s => ({ ...s, voiceConfig: vc, language: vc.selectedLanguage }))}
+            voiceConfig={settings.voiceConfig}
+            onUpdateConfig={(vc) => {
+              setSettings(s => ({ ...s, voiceConfig: vc, language: vc.selectedLanguage }));
+            }}
           />
         );
       case 'plugins':
-        return <PluginsScreen plugins={plugins} onTogglePlugin={handleTogglePlugin} onOpenPluginModal={handleOpenPlugin} />;
+        return (
+          <PluginsScreen
+            plugins={plugins}
+            onTogglePlugin={handleTogglePlugin}
+            onOpenPluginModal={handleOpenPlugin}
+          />
+        );
       case 'pc-control':
-        return <PcControlScreen onBack={() => setCurrentScreen('home')} pcIp={settings.pcIpAddress} />;
+        return (
+          <PcControlScreen
+            onBack={() => setCurrentScreen('home')}
+            pcIp={settings.pcIpAddress}
+          />
+        );
       case 'tools':
-        return <ToolsScreen onOpenTool={handleOpenTool} />;
+        return (
+          <ToolsScreen
+            onOpenTool={handleOpenTool}
+          />
+        );
       case 'ai-settings':
         return (
           <AiSettingsScreen
@@ -201,17 +248,47 @@ export default function App() {
           />
         );
       case 'api-hub':
-        return <ApiHubScreen onBack={() => setCurrentScreen('home')} />;
+        return (
+          <ApiHubScreen
+            onBack={() => setCurrentScreen('home')}
+          />
+        );
       case 'settings':
-        return <SettingsScreen onNavigate={setCurrentScreen} onOpenApkModal={() => setIsApkModalOpen(true)} />;
+        return (
+          <SettingsScreen
+            onNavigate={setCurrentScreen}
+            onOpenApkModal={() => setIsApkModalOpen(true)}
+          />
+        );
       case 'appearance':
-        return <AppearanceScreen onBack={() => setCurrentScreen('settings')} currentTheme={settings.theme} onSelectTheme={(t) => setSettings(s => ({ ...s, theme: t }))} />;
+        return (
+          <AppearanceScreen
+            onBack={() => setCurrentScreen('settings')}
+            currentTheme={settings.theme}
+            onSelectTheme={(t) => {
+              setSettings(s => ({ ...s, theme: t }));
+            }}
+          />
+        );
       case 'security-permissions':
-        return <SecurityPermissionsScreen onBack={() => setCurrentScreen('settings')} />;
+        return (
+          <SecurityPermissionsScreen
+            onBack={() => setCurrentScreen('settings')}
+          />
+        );
       case 'software-update':
-        return <SoftwareUpdateScreen onBack={() => setCurrentScreen('settings')} onOpenApkModal={() => setIsApkModalOpen(true)} />;
+        return (
+          <SoftwareUpdateScreen
+            onBack={() => setCurrentScreen('settings')}
+            onOpenApkModal={() => setIsApkModalOpen(true)}
+          />
+        );
       case 'connected-devices':
-        return <ConnectedDevicesScreen onBack={() => setCurrentScreen('home')} />;
+        return (
+          <ConnectedDevicesScreen
+            onBack={() => setCurrentScreen('home')}
+          />
+        );
       default:
         return null;
     }
@@ -219,6 +296,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
+      
+      {/* Top Global Control Toolbar */}
       <header className="sticky top-0 z-40 bg-[#06101d]/90 backdrop-blur-md border-b border-cyan-950/80 px-4 py-2.5 flex items-center justify-between shadow-lg">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-[1.5px] shadow-[0_0_12px_rgba(56,189,248,0.4)]">
@@ -233,58 +312,237 @@ export default function App() {
                 Android APK Suite v1.0
               </span>
             </div>
-            <p className="text-[10px] text-slate-400">Smarter - Faster - Together</p>
+            <p className="text-[10px] text-slate-400">Smarter • Faster • Together</p>
           </div>
         </div>
+
+        {/* View Switchers & Controls */}
         <div className="flex items-center gap-2">
+          {/* Screen quick jumper */}
+          <div className="hidden md:flex items-center gap-1.5 bg-[#091524] p-1 rounded-xl border border-cyan-950 text-xs">
+            <span className="text-[10px] text-slate-400 px-1 font-medium">Screen:</span>
+            <select
+              value={currentScreen}
+              onChange={(e) => {
+                audioService.playCyberChime('beep');
+                setCurrentScreen(e.target.value as ScreenType);
+                if (viewMode === 'gallery') setViewMode('phone');
+              }}
+              className="bg-transparent text-cyan-300 text-xs font-semibold focus:outline-hidden cursor-pointer"
+            >
+              <option value="splash" className="bg-[#091524] text-white">01. Splash Screen</option>
+              <option value="home" className="bg-[#091524] text-white">02. Home Screen</option>
+              <option value="chat" className="bg-[#091524] text-white">03. Chat Interface</option>
+              <option value="voice" className="bg-[#091524] text-white">04. Voice Assistant</option>
+              <option value="system-apps" className="bg-[#091524] text-white">📱 সিস্টেম অ্যাপস (System Voice Controller)</option>
+              <option value="social-media" className="bg-[#091524] text-white">🌐 সোশ্যাল মিডিয়া (Social Media Hub)</option>
+              <option value="plugins" className="bg-[#091524] text-white">05. Plugins (10 Tools)</option>
+              <option value="pc-control" className="bg-[#091524] text-white">06. PC Control</option>
+              <option value="tools" className="bg-[#091524] text-white">07. Tools Section</option>
+              <option value="ai-settings" className="bg-[#091524] text-white">08. AI Agent Settings</option>
+              <option value="settings" className="bg-[#091524] text-white">09. Settings</option>
+              <option value="appearance" className="bg-[#091524] text-white">🎨 Appearance & Themes (Cyberpunk & iOS Glass)</option>
+              <option value="security-permissions" className="bg-[#091524] text-white">🛡️ Security & Advanced Permissions</option>
+              <option value="software-update" className="bg-[#091524] text-white">🚀 Software & App Updates (OTA)</option>
+              <option value="connected-devices" className="bg-[#091524] text-white">10. Android Integration</option>
+              <option value="voice-settings" className="bg-[#091524] text-white">11. Voice & Multi-Language</option>
+            </select>
+          </div>
+
+          {/* Quick Theme Switcher Button */}
           <button
-            onClick={() => { audioService.playCyberChime('beep'); setCurrentScreen('appearance'); if (viewMode === 'gallery') setViewMode('phone'); }}
+            onClick={() => {
+              audioService.playCyberChime('beep');
+              setCurrentScreen('appearance');
+              if (viewMode === 'gallery') setViewMode('phone');
+            }}
             className="hidden sm:flex px-2.5 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 hover:border-cyan-400 text-xs items-center gap-1.5 transition active:scale-95 text-slate-300"
+            title="Appearance Themes: iOS Blur, Cyberpunk Neon, OLED"
           >
             <Palette className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-[11px] font-bold text-cyan-300">{THEMES[settings.theme]?.badge || 'Theme'}</span>
+            <span className="hidden xl:inline text-[11px] font-semibold text-slate-400">Theme:</span>
+            <span className="text-[11px] font-bold text-cyan-300">
+              {THEMES[settings.theme]?.badge || 'Theme'}
+            </span>
           </button>
+
+          {/* View Modes */}
           <div className="flex items-center gap-1 bg-[#091524] p-1 rounded-xl border border-cyan-950">
-            <button onClick={() => { audioService.playCyberChime(); setViewMode('phone'); }} className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${viewMode === 'phone' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'}`}>
-              <Smartphone className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Phone</span>
+            <button
+              onClick={() => { audioService.playCyberChime(); setViewMode('phone'); }}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${
+                viewMode === 'phone' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'
+              }`}
+              title="Phone Simulator"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Phone</span>
             </button>
-            <button onClick={() => { audioService.playCyberChime(); setViewMode('fullscreen'); }} className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${viewMode === 'fullscreen' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'}`}>
-              <Maximize2 className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Fullscreen</span>
+            <button
+              onClick={() => { audioService.playCyberChime(); setViewMode('fullscreen'); }}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${
+                viewMode === 'fullscreen' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'
+              }`}
+              title="Fullscreen Mode"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Fullscreen</span>
             </button>
-            <button onClick={() => { audioService.playCyberChime(); setViewMode('gallery'); }} className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${viewMode === 'gallery' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'}`}>
-              <Grid className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Gallery</span>
+            <button
+              onClick={() => { audioService.playCyberChime(); setViewMode('gallery'); }}
+              className={`px-2.5 py-1 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition ${
+                viewMode === 'gallery' ? 'bg-cyan-500 text-slate-950' : 'text-slate-400 hover:text-white'
+              }`}
+              title="All Screens Mockup Overview"
+            >
+              <Grid className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">10+ Screens</span>
             </button>
           </div>
-          <button onClick={() => setSoundEnabled(!soundEnabled)} className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition cursor-pointer">
+
+          {/* Sound Toggle */}
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition cursor-pointer"
+            title={soundEnabled ? 'Sound Effects Enabled' : 'Muted'}
+          >
             {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </button>
-          <button onClick={async () => { audioService.playCyberChime('activate'); await downloadHtmlCodeZip(); confetti({ particleCount: 75, spread: 60, origin: { y: 0.6 } }); }} className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md">
-            <FileCode className="w-4 h-4 text-slate-950" /> <span>HTML ZIP</span>
+
+          {/* HTML Code ZIP Download Button */}
+          <button
+            onClick={async () => {
+              audioService.playCyberChime('activate');
+              try {
+                await downloadHtmlCodeZip();
+                confetti({
+                  particleCount: 75,
+                  spread: 60,
+                  origin: { y: 0.6 }
+                });
+                audioService.playCyberChime('success');
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_15px_rgba(56,189,248,0.4)] hover:brightness-110 active:scale-95 transition cursor-pointer"
+            title="Download complete HTML Code ZIP package"
+          >
+            <FileCode className="w-4 h-4 text-slate-950 stroke-[2.5]" />
+            <span className="hidden sm:inline">HTML Code</span>
+            <span>ZIP</span>
           </button>
-          <button onClick={() => { audioService.playCyberChime('activate'); setIsApkModalOpen(true); }} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md">
-            <Download className="w-4 h-4 text-slate-950" /> <span>Android APK</span>
+
+          {/* Primary Action: Android 16 APK File Download Button */}
+          <button
+            onClick={() => {
+              audioService.playCyberChime('activate');
+              setIsApkModalOpen(true);
+            }}
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_15px_rgba(52,211,153,0.4)] hover:brightness-110 active:scale-95 transition cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-slate-950 stroke-[2.5]" />
+            <span>Android 16 APK</span>
           </button>
         </div>
       </header>
 
+      {/* Main Workspace */}
       <main className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 overflow-x-hidden">
         {viewMode === 'gallery' ? (
-          <OverviewGallery onSelectScreen={(screen) => { setCurrentScreen(screen); setViewMode('phone'); }} />
+          <OverviewGallery 
+            onSelectScreen={(screen) => {
+              setCurrentScreen(screen);
+              setViewMode('phone');
+            }}
+          />
         ) : (
           <div className="w-full flex flex-col items-center justify-center">
-            <PhoneFrame currentScreen={currentScreen} onNavigate={setCurrentScreen} activePluginCount={plugins.filter(p => p.enabled).length} fullscreen={viewMode === 'fullscreen'} theme={settings.theme}>
+            {/* Quick Screen Selector Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto max-w-sm py-1 mb-2 no-scrollbar">
+              {[
+                { id: 'splash', label: '1. Splash' },
+                { id: 'home', label: '2. Home' },
+                { id: 'chat', label: '3. Chat' },
+                { id: 'voice', label: '4. Voice' },
+                { id: 'system-apps', label: '📱 সিস্টেম (System)' },
+                { id: 'appearance', label: '🎨 Appearance (iOS / Cyberpunk)' },
+                { id: 'voice-settings', label: '🌐 Voice (Multi-Lang)' },
+                { id: 'plugins', label: '5. Plugins' },
+                { id: 'pc-control', label: '6. PC' },
+                { id: 'tools', label: '7. Tools' },
+                { id: 'ai-settings', label: '8. AI' },
+                { id: 'settings', label: '9. Settings' },
+                { id: 'connected-devices', label: '10. Devices' },
+              ].map(s => (
+                <button
+                  key={s.id}
+                  onClick={() => { audioService.playCyberChime(); setCurrentScreen(s.id as ScreenType); }}
+                  className={`text-[10px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap transition cursor-pointer ${
+                    currentScreen === s.id ? 'bg-cyan-500 text-slate-950 font-bold shadow-[0_0_10px_rgba(56,189,248,0.4)]' : 'bg-[#091524] text-slate-400 hover:text-white border border-cyan-950'
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+
+            <PhoneFrame
+              currentScreen={currentScreen}
+              onNavigate={setCurrentScreen}
+              activePluginCount={plugins.filter(p => p.enabled).length}
+              fullscreen={viewMode === 'fullscreen'}
+              theme={settings.theme}
+            >
               {renderScreenContent()}
             </PhoneFrame>
           </div>
         )}
       </main>
+
+      {/* Branding Ribbon matching the footer of the uploaded mockup */}
       <BrandingFooter />
-      <ApkExportModal isOpen={isApkModalOpen} onClose={() => setIsApkModalOpen(false)} deferredPrompt={deferredPrompt} />
-      <WeatherModal isOpen={activeModal === 'weather'} onClose={() => setActiveModal(null)} />
-      <CurrencyModal isOpen={activeModal === 'currency'} onClose={() => setActiveModal(null)} />
-      <NotesModal isOpen={activeModal === 'notes'} onClose={() => setActiveModal(null)} />
-      <QrScannerModal isOpen={activeModal === 'qr'} onClose={() => setActiveModal(null)} />
-      <ImageGenModal isOpen={activeModal === 'image-gen'} onClose={() => setActiveModal(null)} />
+
+      {/* APK & Project Export Center Modal */}
+      {isApkModalOpen && (
+        <ApkExportModal
+          isOpen={isApkModalOpen}
+          onClose={() => setIsApkModalOpen(false)}
+          deferredPrompt={deferredPrompt}
+        />
+      )}
+
+      {/* Tool Utility Modals */}
+      {activeModal === 'weather' && (
+        <WeatherModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === 'currency' && (
+        <CurrencyModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === 'notes' && (
+        <NotesModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === 'qr' && (
+        <QrScannerModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === 'image-gen' && (
+        <ImageGenModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
     </div>
   );
 }

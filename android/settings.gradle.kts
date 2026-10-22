@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Friday420AiAssistant"
+rootProject.name = "SHAIAssistant"
 include(":app")

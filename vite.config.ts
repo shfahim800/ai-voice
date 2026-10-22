@@ -10,6 +10,20 @@ export default defineConfig(() => {
       alias: {
         '@': path.resolve(process.cwd(), '.'),
       },
+      dedupe: ['react', 'react-dom'],
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'react-dom',
+        'react-dom/client',
+        'lucide-react',
+        'canvas-confetti',
+        'jszip',
+        'motion/react',
+      ],
     },
     server: {
       host: '0.0.0.0',
