@@ -40,8 +40,10 @@ async function exportAndroidZip() {
   fs.mkdirSync(publicDir, { recursive: true });
   const outputPath = path.join(publicDir, 'Friday420_AI_Assistant_Native_Kotlin_Android_SDK.zip');
   fs.writeFileSync(outputPath, buffer);
+  const shOutputPath = path.join(publicDir, 'SH_AI_Assistant_Android_Studio_Project.zip');
+  fs.writeFileSync(shOutputPath, buffer);
 
-  console.log(`Native Android Studio Kotlin Project exported successfully: ${outputPath} (${(buffer.length / 1024).toFixed(1)} KB)`);
+  console.log(`Native Android Studio Kotlin Project exported successfully: ${outputPath} and ${shOutputPath}`);
 }
 
 exportAndroidZip().catch(console.error);

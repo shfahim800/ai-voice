@@ -654,10 +654,10 @@ export async function downloadHtmlCodeZip(): Promise<void> {
 
 export async function downloadNativeKotlinProjectZip(): Promise<void> {
   try {
-    const res = await fetch('/Friday420_AI_Assistant_Native_Kotlin_Android_SDK.zip');
+    const res = await fetch('/SH_AI_Assistant_Android_Studio_Project.zip');
     if (res.ok) {
       const blob = await res.blob();
-      triggerDownload(blob, 'Friday420_AI_Assistant_Native_Kotlin_Android_SDK.zip');
+      triggerDownload(blob, 'SH_AI_Assistant_Android_Studio_Project.zip');
       return;
     }
   } catch (e) {
@@ -669,10 +669,10 @@ export async function downloadNativeKotlinProjectZip(): Promise<void> {
 
 export async function downloadNativeApk(): Promise<void> {
   try {
-    const res = await fetch('/Friday420_AI_Assistant_Android.apk');
+    const res = await fetch('/SH_AI_Assistant_Android16_Clean.apk');
     if (res.ok) {
       const blob = await res.blob();
-      triggerDownload(blob, 'Friday420_AI_Assistant_Android.apk');
+      triggerDownload(blob, 'SH_AI_Assistant_Android16_Clean.apk');
       return;
     }
   } catch (e) {

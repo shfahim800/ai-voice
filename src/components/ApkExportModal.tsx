@@ -20,7 +20,9 @@ import {
   generateApkPackage, 
   generateAndroidStudioProject, 
   downloadWindowsScript,
-  downloadHtmlCodeZip
+  downloadHtmlCodeZip,
+  downloadNativeApk,
+  downloadNativeKotlinProjectZip
 } from '../services/apkGenerator';
 import { audioService } from '../services/audioService';
 
@@ -48,7 +50,7 @@ const ApkExportModalDialog: React.FC<{
     audioService.playCyberChime('activate');
     setDownloadingApk(true);
     try {
-      await generateApkPackage();
+      await downloadNativeApk();
       confetti({
         particleCount: 80,
         spread: 60,
@@ -57,6 +59,7 @@ const ApkExportModalDialog: React.FC<{
       audioService.playCyberChime('success');
     } catch (e) {
       console.error(e);
+      await generateApkPackage();
     } finally {
       setDownloadingApk(false);
     }
@@ -84,7 +87,7 @@ const ApkExportModalDialog: React.FC<{
     audioService.playCyberChime('activate');
     setDownloadingZip(true);
     try {
-      await generateAndroidStudioProject();
+      await downloadNativeKotlinProjectZip();
       confetti({
         particleCount: 90,
         spread: 70,
@@ -93,6 +96,7 @@ const ApkExportModalDialog: React.FC<{
       audioService.playCyberChime('success');
     } catch (e) {
       console.error(e);
+      await generateAndroidStudioProject();
     } finally {
       setDownloadingZip(false);
     }
